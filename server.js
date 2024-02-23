@@ -5,8 +5,13 @@ import { dirname, join } from "node:path";
 import { Server } from "socket.io";
 
 const app = express();
-const server = createServer(app);
-const io = new Server(server);
+const server = createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ["GET", "POST"]
+  }
+});
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
