@@ -11,7 +11,7 @@ const io = new Server(server);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.get("/", (req, res) => {
-  res.send("Escriba un id de session en la url. Ejemplo: localhost:3000/1234");
+    res.redirect("/1234");
 });
 
 app.get("/:sessionId", (req, res) => {
@@ -25,6 +25,10 @@ io.on("connection", (socket) => {
 
   socket.on("main-input-edit", (message) => {
     io.emit("main-input-edit-" + message.session, message.value);
+  });
+
+  socket.on("main-input-cursor-position", (message) => {
+    io.emit("main-input-cursor-position-" + message.session, message.value);
   });
 });
 

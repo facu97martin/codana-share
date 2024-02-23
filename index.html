@@ -25,17 +25,27 @@
 
       const textArea = document.getElementById("main-input");
 
-      function emitMessage() {
+      function emitEditMessage(value) {
         message = {
           session: sessionId,
-          value: textArea.value,
+          value: value,
         };
         socket.emit("main-input-edit", message);
       }
 
+      function emitCursorPositionMessage(value) {
+        message = {
+          session: sessionId,
+          value: value,
+        };
+        socket.emit("main-input-cursor-position", message);
+      }
+
       textArea.addEventListener("input", (e) => {
         e.preventDefault();
-        emitMessage();
+        emitEditMessage(textArea.value);
+        var cursorPosition = textArea.selectionStart;
+        emitCursorPositionMessage()
       });
 
       socket.on("main-input-edit-" + sessionId, (text) => {
@@ -44,13 +54,17 @@
 
       socket.on("check-existing-message-" + sessionId, (check) => {
         if (textArea.value !== "") {
-          emitMessage();
+            emitEditMessage(textArea.value);
         }
+      });
+
+      socket.on("main-input-cursor-position-" + sessionId, (value) => {
+        console.log("Other position: " + value)
       });
     };
   </script>
   <body>
-    <h1>Codana Share</h1>
+    <h1>Codanna Share</h1>
     <br />
     <textarea id="main-input" placeholder="Escriba aqui..."></textarea>
   </body>
