@@ -5,9 +5,9 @@ import {CodeEditor} from "./editor";
 function App() {
   return (
     <div className="App">
-        <p>
+        <h1>
             Codanna Share
-        </p>
+        </h1>
         <CodeEditor/>
     </div>
   );

@@ -16,18 +16,25 @@ export function CodeEditor() {
         withCredentials: false,
     });
 
+    const sessionId = window.location.pathname.split("/").slice(-1);
+
     const onValueChange = (newValue) => {
         setCode(newValue);
         console.log(newValue);
-        socket.emit("main-input-edit", newValue);
+
+        const message = {
+            session: sessionId,
+            value: newValue
+        };
+        socket.emit("main-input-edit", message);
     }
 
     useEffect(() => {
         const handler = (message) => {
-            setCode(message);
+            setCode(message.value);
             console.log(message);
         };
-        socket.on("main-input-edit", handler);
+        socket.on("main-input-edit-" + sessionId, handler);
     }, []);
 
     return (
