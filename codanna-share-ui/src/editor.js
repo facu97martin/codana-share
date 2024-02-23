@@ -12,7 +12,7 @@ export function CodeEditor() {
         `function add(a, b) {\n  return a + b;\n}`
     );
 
-    const socket = io("http://localhost:3000", {
+    const socket = io(window.location.protocol + "//" + window.location.hostname + ":3000", {
         withCredentials: false,
     });
 
@@ -20,7 +20,6 @@ export function CodeEditor() {
 
     const onValueChange = (newValue) => {
         setCode(newValue);
-        console.log(newValue);
 
         const message = {
             session: sessionId,
@@ -32,7 +31,6 @@ export function CodeEditor() {
     useEffect(() => {
         const handler = (message) => {
             setCode(message.value);
-            console.log(message);
         };
         socket.on("main-input-edit-" + sessionId, handler);
     }, []);
