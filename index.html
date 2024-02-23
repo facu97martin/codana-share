@@ -13,32 +13,45 @@
         height: 100vh;
         resize: none;
       }
-
     </style>
   </head>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
-
     window.onload = () => {
+      const socket = io();
+
+      const sessionId = window.location.pathname.split("/").slice(-1);
+      socket.emit("new-connection", sessionId);
+
       const textArea = document.getElementById("main-input");
+
+      function emitMessage() {
+        message = {
+          session: sessionId,
+          value: textArea.value,
+        };
+        socket.emit("main-input-edit", message);
+      }
 
       textArea.addEventListener("input", (e) => {
         e.preventDefault();
-        socket.emit("main-input-edit", textArea.value);
+        emitMessage();
       });
 
-      socket.on("main-input-edit", (text) => {
+      socket.on("main-input-edit-" + sessionId, (text) => {
         textArea.value = text;
+      });
+
+      socket.on("check-existing-message-" + sessionId, (check) => {
+        if (textArea.value !== "") {
+          emitMessage();
+        }
       });
     };
   </script>
   <body>
     <h1>Codana Share</h1>
-    <br>
+    <br />
     <textarea id="main-input" placeholder="Escriba aqui..."></textarea>
-    <div>
-        
-    </div>
   </body>
 </html>
