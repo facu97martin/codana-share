@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        height: 100%;
+      }
+
+      textarea {
+        width: 100%;
+        height: 100vh;
+        resize: none;
+      }
+
+    </style>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    window.onload = () => {
+      const textArea = document.getElementById("main-input");
+
+      textArea.addEventListener("input", (e) => {
+        e.preventDefault();
+        socket.emit("main-input-edit", textArea.value);
+      });
+
+      socket.on("main-input-edit", (text) => {
+        textArea.value = text;
+      });
+    };
+  </script>
+  <body>
+    <h1>Codana Share</h1>
+    <br>
+    <textarea id="main-input" placeholder="Escriba aqui..."></textarea>
+    <div>
+        
+    </div>
+  </body>
+</html>
