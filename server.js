@@ -24,11 +24,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("main-input-edit", (message) => {
-    io.emit("main-input-edit-" + message.session, message.value);
+    io.emit("main-input-edit-" + message.session, message);
   });
 
   socket.on("main-input-cursor-position", (message) => {
-    io.emit("main-input-cursor-position-" + message.session, message.value);
+    io.emit("main-input-cursor-position-" + message.session, message);
   });
 });
 

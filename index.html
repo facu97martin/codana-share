@@ -25,10 +25,14 @@
 
       const textArea = document.getElementById("main-input");
 
+      var selectionStart;
+      var selectionEnd;
+
       function emitEditMessage(value) {
         message = {
           session: sessionId,
           value: value,
+          caretPosition: textArea.selectionStart
         };
         socket.emit("main-input-edit", message);
       }
@@ -44,12 +48,15 @@
       textArea.addEventListener("input", (e) => {
         e.preventDefault();
         emitEditMessage(textArea.value);
-        var cursorPosition = textArea.selectionStart;
+        selectionStart = textArea.selectionStart;
+        selectionEnd = textArea.selectionEnd;
         emitCursorPositionMessage()
       });
 
-      socket.on("main-input-edit-" + sessionId, (text) => {
-        textArea.value = text;
+      socket.on("main-input-edit-" + sessionId, (message) => {
+        textArea.value = message.value;
+        textArea.selectionStart = selectionStart;
+        textArea.selectionEnd = selectionEnd;
       });
 
       socket.on("check-existing-message-" + sessionId, (check) => {
