@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import {CodeEditor} from "./editor";
+import React from 'react';
+import DrawingCanvas from "./drawEditor";
 
 function App() {
   return (
@@ -10,7 +12,10 @@ function App() {
                 CODANNA-Share
             </p>
         </div>
-        <CodeEditor/>
+        <div className="editor">
+            <CodeEditor/>
+            <DrawingCanvas/>
+        </div>
     </div>
   );
 }

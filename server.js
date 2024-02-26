@@ -32,6 +32,11 @@ io.on("connection", (socket) => {
     io.emit("main-input-edit-" + message.session, message);
   });
 
+  socket.on("main-draw-edit", (message) => {
+    console.log(message);
+    io.emit("main-draw-edit-" + message.session, message);
+  });
+
   socket.on("main-input-cursor-position", (message) => {
     io.emit("main-input-cursor-position-" + message.session, message);
   });
